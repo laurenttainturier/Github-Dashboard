@@ -1,8 +1,10 @@
 package com.example.githubdashboard
 
 import android.app.Application
-import com.example.githubdashboard.repository.repositoryModule
-import com.example.githubdashboard.viewModel.viewModelModule
+import com.example.githubdashboard.repository.GithubRepository
+import com.example.githubdashboard.repository.UserRepository
+import com.example.githubdashboard.viewModel.GithubReposViewModel
+import com.example.githubdashboard.viewModel.UserViewModel
 import com.example.githubdashboard.webservices.webserviceModule
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -18,6 +20,17 @@ import org.koin.core.logger.Level
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+
+val repositoryModule = module {
+    factory { GithubRepository(get()) }
+    factory { UserRepository(get()) }
+}
+
+val viewModelModule = module {
+    single { GithubReposViewModel(get()) }
+    single { UserViewModel(get()) }
+}
 
 
 val netModule = module {

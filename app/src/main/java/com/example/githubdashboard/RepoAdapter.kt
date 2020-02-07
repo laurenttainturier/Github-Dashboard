@@ -12,6 +12,9 @@ import kotlinx.android.synthetic.main.repository_item.view.*
 class RepoAdapter(context: Context) : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
     var repos: MutableList<GithubRepo> = listOf<GithubRepo>().toMutableList()
+    set(value) {
+        field = value
+    }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -23,6 +26,11 @@ class RepoAdapter(context: Context) : RecyclerView.Adapter<RepoAdapter.RepoViewH
         return RepoViewHolder(view)
     }
 
+    fun updateRepos(newRepos: MutableList<GithubRepo>) {
+        repos = newRepos
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return repos.size
     }
@@ -32,6 +40,7 @@ class RepoAdapter(context: Context) : RecyclerView.Adapter<RepoAdapter.RepoViewH
     }
 
     class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         fun bindRepos(repo: GithubRepo) = with(repo) {
             itemView.repoName.text = repo.name
         }

@@ -1,5 +1,6 @@
 package com.example.githubdashboard.model
 
-interface User {
-    val username: String
-}
+data class User (
+    val name: String,
+    val avatar_url: String
+)

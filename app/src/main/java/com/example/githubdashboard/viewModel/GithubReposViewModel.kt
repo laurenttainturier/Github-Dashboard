@@ -1,19 +1,23 @@
 package com.example.githubdashboard.viewModel
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.repository.GithubRepository
-import org.koin.dsl.module
 
 
-val viewModelModule = module {
-    single {GithubReposViewModel(get())}
-}
+class GithubReposViewModel(private val repository: GithubRepository) : ViewModel() {
 
-class GithubReposViewModel(repository: GithubRepository) : ViewModel() {
+    private var innerGithubRepos : MutableLiveData<List<GithubRepo>> = MutableLiveData()
 
-    var githubRepos : MutableLiveData<List<GithubRepo>> = repository.getGithubRepos("laurenttainturier") as MutableLiveData<List<GithubRepo>>
-    
+    val githubRepos : LiveData<List<GithubRepo>>
+    get() = innerGithubRepos
+
+    fun getUserRepos(username: String) {
+        repository.getGithubRepos(username) {
+            innerGithubRepos.value = it
+        }
+    }
 }
