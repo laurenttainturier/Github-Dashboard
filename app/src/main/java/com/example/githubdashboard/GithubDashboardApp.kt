@@ -1,7 +1,11 @@
 package com.example.githubdashboard
 
 import android.app.Application
-import com.example.githubdashboard.repository.GithubRepository
+import androidx.room.Room
+import com.example.githubdashboard.dao.GithubRepoDao
+import com.example.githubdashboard.dao.UserDao
+import com.example.githubdashboard.database.GithubDatabase
+import com.example.githubdashboard.repository.GithubRepoRepository
 import com.example.githubdashboard.repository.UserRepository
 import com.example.githubdashboard.viewModel.GithubReposViewModel
 import com.example.githubdashboard.viewModel.UserViewModel
@@ -23,8 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val repositoryModule = module {
-    factory { GithubRepository(get()) }
-    factory { UserRepository(get()) }
+    factory { GithubRepoRepository(get(), get()) }
+    factory { UserRepository(get(), get()) }
 }
 
 val viewModelModule = module {
@@ -32,6 +36,27 @@ val viewModelModule = module {
     single { UserViewModel(get()) }
 }
 
+val dbModule = module {
+
+    fun provideDatabase(application: Application): GithubDatabase {
+        return Room.databaseBuilder(application, GithubDatabase::class.java, "eds.database")
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
+    }
+
+    fun provideRepoDao(githubDatabase: GithubDatabase): GithubRepoDao {
+        return githubDatabase.githubRepoDao
+    }
+
+    fun provideUserDao(githubDatabase: GithubDatabase) : UserDao {
+        return githubDatabase.userDao
+    }
+
+    single { provideDatabase(androidApplication())}
+    single { provideRepoDao(get()) }
+    single { provideUserDao(get()) }
+}
 
 val netModule = module {
     fun provideCache(application: Application): Cache {
@@ -52,6 +77,7 @@ val netModule = module {
 
 
     fun provideRetrofit(factory: Gson, client: OkHttpClient): Retrofit {
+
         return Retrofit.Builder()
             .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create(factory))
@@ -64,7 +90,6 @@ val netModule = module {
     single { provideHttpClient(get()) }
     single { provideGson() }
     single { provideRetrofit(get(), get()) }
-
 }
 
 
@@ -74,7 +99,13 @@ class GithubDashboardApp : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@GithubDashboardApp)
-            modules(listOf(viewModelModule, repositoryModule, webserviceModule, netModule))
+            modules(listOf(
+                viewModelModule,
+                repositoryModule,
+                webserviceModule,
+                netModule,
+                dbModule
+            ))
         }
     }
 }

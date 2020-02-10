@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.app.ComponentActivity.ExtraData
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.inputmethod.InputMethodManager
+import com.example.githubdashboard.extensions.hideKeyboard
 
 
 class MainActivity : AppCompatActivity() {
@@ -62,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         val username = username_editText.text.toString()
         userViewModel.getUser(username)
         reposViewModel.getUserRepos(username)
-        val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        hideKeyboard(view)
     }
 }

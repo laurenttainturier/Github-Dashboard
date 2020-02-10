@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubdashboard.model.GithubRepo
-import com.example.githubdashboard.repository.GithubRepository
+import com.example.githubdashboard.repository.GithubRepoRepository
 
 
-class GithubReposViewModel(private val repository: GithubRepository) : ViewModel() {
+class GithubReposViewModel(private val repoRepository: GithubRepoRepository) : ViewModel() {
 
     private var innerGithubRepos : MutableLiveData<List<GithubRepo>> = MutableLiveData()
 
@@ -16,7 +16,7 @@ class GithubReposViewModel(private val repository: GithubRepository) : ViewModel
     get() = innerGithubRepos
 
     fun getUserRepos(username: String) {
-        repository.getGithubRepos(username) {
+        repoRepository.getGithubRepos(username) {
             innerGithubRepos.value = it
         }
     }
