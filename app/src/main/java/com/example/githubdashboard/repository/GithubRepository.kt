@@ -12,7 +12,6 @@ class GithubRepository (private val webservice: Webservice){
 
         webservice.getRepos(username).enqueue(object : retrofit2.Callback<List<GithubRepo>> {
             override fun onFailure(call: Call<List<GithubRepo>>, t: Throwable) {
-                TODO("not implemented")
             }
 
             override fun onResponse(

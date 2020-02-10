@@ -1,6 +1,10 @@
 package com.example.githubdashboard.model
 
+import com.google.gson.annotations.SerializedName
+
 data class User (
-    val name: String,
-    val avatar_url: String
+    @SerializedName("login")
+    val username: String,
+    @SerializedName("avatar_url")
+    val avatarUrl: String
 )

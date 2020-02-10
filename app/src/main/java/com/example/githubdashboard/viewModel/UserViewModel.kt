@@ -10,12 +10,11 @@ import com.example.githubdashboard.repository.UserRepository
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
-    var user: MutableLiveData<User> = MutableLiveData()
+    var user: MutableLiveData<User?> = MutableLiveData()
 
     fun getUser(username: String) {
         repository.getUser(username) {
-            if (it != null)
-                user.value = it
+            user.value = it
         }
     }
 }
