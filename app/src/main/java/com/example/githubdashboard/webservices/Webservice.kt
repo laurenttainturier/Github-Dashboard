@@ -9,15 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 
-val webserviceModule = module {
-    fun provideUserApi(retrofit: Retrofit): Webservice {
-        return retrofit.create(Webservice::class.java)
-    }
-
-    single { provideUserApi(get()) }
-}
-
-
 interface Webservice {
 
     @GET("/users/{name}/repos")
