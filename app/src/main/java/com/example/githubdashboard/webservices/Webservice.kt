@@ -25,4 +25,7 @@ interface Webservice {
 
     @GET("/users/{name}")
     fun getUser(@Path("name") username: String) : Call<User>
+
+    @GET("/users?per_page=100")
+    fun getAllUsers() : Call<List<User>>
 }

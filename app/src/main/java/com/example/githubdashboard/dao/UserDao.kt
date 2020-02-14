@@ -8,8 +8,11 @@ import com.example.githubdashboard.model.User
 
 @Dao
 interface UserDao {
-    @Query("select * from user where username=:username LIMIT 1")
+    @Query("select * from user where username=lower(:username) LIMIT 1")
     fun getUser(username: String): User?
+
+    @Query("select * from user")
+    fun getAllUsers(): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)

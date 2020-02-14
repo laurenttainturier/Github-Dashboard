@@ -12,9 +12,17 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
     var user: MutableLiveData<User?> = MutableLiveData()
 
+    var possibleUsers : MutableLiveData<List<User>> = MutableLiveData()
+
     fun getUser(username: String) {
-        repository.getUser(username) {
-            user.value = it
+        repository.getUser(username) { user ->
+            this.user.value = user
+        }
+    }
+
+    fun getAllUsers(username: String) {
+        return repository.getAllUsers(username) { users ->
+            possibleUsers.value = users
         }
     }
 }

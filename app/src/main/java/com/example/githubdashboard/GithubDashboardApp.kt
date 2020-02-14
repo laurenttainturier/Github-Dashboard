@@ -1,10 +1,12 @@
 package com.example.githubdashboard
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.githubdashboard.dao.GithubRepoDao
 import com.example.githubdashboard.dao.UserDao
 import com.example.githubdashboard.database.GithubDatabase
+import com.example.githubdashboard.extensions.NetworkConnectionInterceptor
 import com.example.githubdashboard.repository.GithubRepoRepository
 import com.example.githubdashboard.repository.UserRepository
 import com.example.githubdashboard.viewModel.GithubReposViewModel
@@ -64,8 +66,9 @@ val netModule = module {
         return Cache(application.cacheDir, cacheSize.toLong())
     }
 
-    fun provideHttpClient(cache: Cache): OkHttpClient {
+    fun provideHttpClient(cache: Cache, context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
+            .addInterceptor(NetworkConnectionInterceptor(context))
             .cache(cache)
 
         return okHttpClientBuilder.build()
@@ -87,7 +90,7 @@ val netModule = module {
     }
 
     single { provideCache(androidApplication()) }
-    single { provideHttpClient(get()) }
+    single { provideHttpClient(get(), androidContext()) }
     single { provideGson() }
     single { provideRetrofit(get(), get()) }
 }

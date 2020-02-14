@@ -9,7 +9,7 @@ import com.example.githubdashboard.model.User
 
 @Dao
 interface GithubRepoDao {
-    @Query("select * from GithubRepo where username = :username")
+    @Query("select * from GithubRepo where username = lower(:username)")
     fun getUserRepos(username: String): List<GithubRepo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,11 +1,13 @@
 package com.example.githubdashboard
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.githubdashboard.extensions.hideKeyboard
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.viewModel.GithubReposViewModel
@@ -32,9 +34,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        username_editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                userViewModel.getAllUsers(username_editText.text.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         reposViewModel.githubRepos.observe(this, Observer<List<GithubRepo>> { githubRepos ->
             adapter.updateRepos(githubRepos)
-            adapter.notifyDataSetChanged()
         })
 
         userViewModel.user.observe(this, Observer { user ->
@@ -47,27 +59,35 @@ class MainActivity : AppCompatActivity() {
                 no_user_found_textView.visibility = View.INVISIBLE
             }
 
+            // load user profile picture using Picasso library
             Picasso.get().load(user?.avatarUrl).into(userAvatar_TextView)
         })
 
+        userViewModel.possibleUsers.observe(this, Observer { users ->
+            val usernames = users.map { user -> user.username }
+            val adapter = ArrayAdapter<String>(
+                this, android.R.layout.simple_dropdown_item_1line, usernames
+            )
+            adapter.notifyDataSetChanged()
+            username_editText.setAdapter(adapter)
+        })
+
+        // refresh repository when user swipes
         swiperefresh.setOnRefreshListener {
-            searchUsername()
+            reposViewModel.getUserRepos(username_textView.text.toString())
             swiperefresh.isRefreshing = false
         }
 
+        // attach the adapter to the recycler view
         adapter = RepoAdapter(this)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(this)
     }
 
     fun onSearchClick(view: View) {
-        searchUsername()
-        hideKeyboard(view)
-    }
-
-    private fun searchUsername() {
         val username = username_editText.text.toString()
         userViewModel.getUser(username)
         reposViewModel.getUserRepos(username)
+        hideKeyboard(view)
     }
 }
