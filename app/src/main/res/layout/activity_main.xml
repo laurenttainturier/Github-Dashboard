@@ -18,9 +18,9 @@
         android:ems="14"
         android:hint="@string/username"
         android:imeOptions="actionDone"
-        android:onClick="searchUsername"
         android:importantForAutofill="no"
         android:inputType="textImeMultiLine"
+        android:onClick="onSearchClick"
         app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@color/colorAccent"
-        android:onClick="searchUsername"
+        android:onClick="onSearchClick"
         android:text="@string/search"
         android:textColor="@android:color/white"
         app:layout_constraintBaseline_toBaselineOf="@+id/username_editText"
@@ -85,11 +85,10 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/search_button"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -99,7 +98,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/username_layout" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_button"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/no_user_found_textView"

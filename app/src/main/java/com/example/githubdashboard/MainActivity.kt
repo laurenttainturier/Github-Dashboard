@@ -5,18 +5,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.example.githubdashboard.extensions.hideKeyboard
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.viewModel.GithubReposViewModel
 import com.example.githubdashboard.viewModel.UserViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import android.app.Activity
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.app.ComponentActivity.ExtraData
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.view.inputmethod.InputMethodManager
-import com.example.githubdashboard.extensions.hideKeyboard
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,15 +50,24 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(user?.avatarUrl).into(userAvatar_TextView)
         })
 
+        swiperefresh.setOnRefreshListener {
+            searchUsername()
+            swiperefresh.isRefreshing = false
+        }
+
         adapter = RepoAdapter(this)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(this)
     }
 
-    fun searchUsername(view: View) {
+    fun onSearchClick(view: View) {
+        searchUsername()
+        hideKeyboard(view)
+    }
+
+    private fun searchUsername() {
         val username = username_editText.text.toString()
         userViewModel.getUser(username)
         reposViewModel.getUserRepos(username)
-        hideKeyboard(view)
     }
 }
