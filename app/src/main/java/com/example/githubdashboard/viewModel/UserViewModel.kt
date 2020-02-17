@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.model.User
 import com.example.githubdashboard.repository.UserRepository
+import java.util.*
 
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
@@ -16,7 +17,9 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun getUser(username: String) {
         repository.getUser(username) { user ->
-            this.user.value = user
+            this.user.value = user?.let {
+                User(user.username.toLowerCase(Locale.getDefault()), user.avatarUrl)
+            } ?: user
         }
     }
 

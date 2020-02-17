@@ -1,7 +1,7 @@
 package com.example.githubdashboard.repository
 
 import com.example.githubdashboard.dao.GithubRepoDao
-import com.example.githubdashboard.extensions.NoConnectivityException
+import com.example.githubdashboard.webservices.NoConnectivityException
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.webservices.Webservice
 import retrofit2.Call

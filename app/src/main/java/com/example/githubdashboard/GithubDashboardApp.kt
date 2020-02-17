@@ -6,17 +6,17 @@ import androidx.room.Room
 import com.example.githubdashboard.dao.GithubRepoDao
 import com.example.githubdashboard.dao.UserDao
 import com.example.githubdashboard.database.GithubDatabase
-import com.example.githubdashboard.extensions.NetworkConnectionInterceptor
+import com.example.githubdashboard.webservices.NetworkConnectionInterceptor
 import com.example.githubdashboard.repository.GithubRepoRepository
 import com.example.githubdashboard.repository.UserRepository
 import com.example.githubdashboard.viewModel.GithubReposViewModel
 import com.example.githubdashboard.viewModel.UserViewModel
+import com.example.githubdashboard.webservices.HeaderInterceptor
 import com.example.githubdashboard.webservices.webserviceModule
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -69,6 +69,7 @@ val netModule = module {
     fun provideHttpClient(context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
             .addInterceptor(NetworkConnectionInterceptor(context))
+            .addInterceptor(HeaderInterceptor(context))
 //            .cache(cache)
 
         return okHttpClientBuilder.build()

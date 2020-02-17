@@ -6,6 +6,8 @@ import org.koin.dsl.module
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.Path
 
 
@@ -26,6 +28,7 @@ interface Webservice {
     @GET("/users/{name}")
     fun getUser(@Path("name") username: String) : Call<User>
 
+    @Headers("Authorization: token 1c0bdca1bd0a61091b089716395d3a4ee1706d99")
     @GET("/users?per_page=100")
-    fun getAllUsers() : Call<List<User>>
+    fun getUsersPage() : Call<List<User>>
 }
