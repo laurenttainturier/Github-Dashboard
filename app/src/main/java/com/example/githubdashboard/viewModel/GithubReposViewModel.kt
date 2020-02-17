@@ -16,7 +16,7 @@ class GithubReposViewModel(private val repoRepository: GithubRepoRepository) : V
     get() = innerGithubRepos
 
     fun getUserRepos(username: String) {
-        repoRepository.getGithubRepos(username) {
+            repoRepository.getGithubRepos(username) {
             innerGithubRepos.value = it
         }
     }

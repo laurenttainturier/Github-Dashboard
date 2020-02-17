@@ -1,12 +1,11 @@
-package com.example.githubdashboard
+package com.example.githubdashboard.Activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.example.githubdashboard.R
 import com.example.githubdashboard.viewModel.GithubReposViewModel
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.repository_detail.*
 import kotlinx.android.synthetic.main.repository_detail.authorAvatar_TextView
 import org.koin.android.viewmodel.ext.android.viewModel

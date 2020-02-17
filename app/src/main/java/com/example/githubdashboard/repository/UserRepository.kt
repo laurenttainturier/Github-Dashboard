@@ -2,7 +2,6 @@ package com.example.githubdashboard.repository
 
 import com.example.githubdashboard.dao.UserDao
 import com.example.githubdashboard.extensions.NoConnectivityException
-import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.model.User
 import com.example.githubdashboard.webservices.Webservice
 import retrofit2.Call
@@ -33,22 +32,7 @@ class UserRepository(private val webservice: Webservice, val userDao: UserDao) {
     }
 
     fun getAllUsers(username: String, block: (List<User>) -> Unit) {
-        webservice.getAllUsers().enqueue(object : retrofit2.Callback<List<User>> {
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                block(emptyList())
-            }
-
-            override fun onResponse(
-                call: Call<List<User>>,
-                response: Response<List<User>>
-            ) {
-                val users = (response.body() ?: emptyList())
-                    .filter { user ->
-                        user.username.startsWith(username.toLowerCase())
-                    }.take(5)
-                block(users)
-            }
-        })
+        block(userDao.getSpecificUsers(username))
     }
 }
 

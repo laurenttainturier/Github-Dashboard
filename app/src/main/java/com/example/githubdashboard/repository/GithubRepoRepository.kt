@@ -14,7 +14,8 @@ class GithubRepoRepository(private val webservice: Webservice, val repoDao: Gith
 
         webservice.getRepos(username).enqueue(object : retrofit2.Callback<List<GithubRepo>> {
             override fun onFailure(call: Call<List<GithubRepo>>, t: Throwable) {
-                if (t is NoConnectivityException) block(repoDao.getUserRepos(username))
+                if (t is NoConnectivityException)
+                    block(repoDao.getUserRepos(username))
                 else block(emptyList())
             }
 
@@ -23,8 +24,6 @@ class GithubRepoRepository(private val webservice: Webservice, val repoDao: Gith
                 response: Response<List<GithubRepo>>
             ) {
                 block(response.body() ?: emptyList())
-                if (response.body() != null)
-                    repoDao.insertRepos(response.body()!!)
             }
         })
     }

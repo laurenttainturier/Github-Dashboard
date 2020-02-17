@@ -61,15 +61,15 @@ val dbModule = module {
 }
 
 val netModule = module {
-    fun provideCache(application: Application): Cache {
+    /*fun provideCache(application: Application): Cache {
         val cacheSize = 10 * 1024 * 1024
         return Cache(application.cacheDir, cacheSize.toLong())
-    }
+    }*/
 
-    fun provideHttpClient(cache: Cache, context: Context): OkHttpClient {
+    fun provideHttpClient(context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
             .addInterceptor(NetworkConnectionInterceptor(context))
-            .cache(cache)
+//            .cache(cache)
 
         return okHttpClientBuilder.build()
     }
@@ -89,8 +89,8 @@ val netModule = module {
             .build()
     }
 
-    single { provideCache(androidApplication()) }
-    single { provideHttpClient(get(), androidContext()) }
+//    single { provideCache(androidApplication()) }
+    single { provideHttpClient(androidContext()) }
     single { provideGson() }
     single { provideRetrofit(get(), get()) }
 }

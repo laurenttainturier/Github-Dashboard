@@ -11,6 +11,9 @@ interface UserDao {
     @Query("select * from user where username=lower(:username) LIMIT 1")
     fun getUser(username: String): User?
 
+    @Query("select * from user where username LIKE :username || '%' ORDER BY username")
+    fun getSpecificUsers(username: String): List<User>
+
     @Query("select * from user")
     fun getAllUsers(): List<User>
 

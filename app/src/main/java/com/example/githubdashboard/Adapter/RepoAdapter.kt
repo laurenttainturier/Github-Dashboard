@@ -1,12 +1,14 @@
-package com.example.githubdashboard
+package com.example.githubdashboard.Adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubdashboard.Activities.MainActivity
+import com.example.githubdashboard.Activities.RepoDetailActivity
+import com.example.githubdashboard.R
 import com.example.githubdashboard.model.GithubRepo
 import kotlinx.android.synthetic.main.repository_item.view.*
 
@@ -14,9 +16,6 @@ import kotlinx.android.synthetic.main.repository_item.view.*
 class RepoAdapter(context: Context) : RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
     var repos: List<GithubRepo> = listOf<GithubRepo>().toMutableList()
-        set(value) {
-            field = value
-        }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -25,7 +24,10 @@ class RepoAdapter(context: Context) : RecyclerView.Adapter<RepoAdapter.RepoViewH
             R.layout.repository_item, parent, false
         )
 
-        return RepoViewHolder(view, this)
+        return RepoViewHolder(
+            view,
+            this
+        )
     }
 
     fun updateRepos(newRepos: List<GithubRepo>) {

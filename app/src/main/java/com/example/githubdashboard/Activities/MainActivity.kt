@@ -1,4 +1,4 @@
-package com.example.githubdashboard
+package com.example.githubdashboard.Activities
 
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubdashboard.R
+import com.example.githubdashboard.Adapter.RepoAdapter
 import com.example.githubdashboard.extensions.hideKeyboard
 import com.example.githubdashboard.model.GithubRepo
 import com.example.githubdashboard.viewModel.GithubReposViewModel
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         userViewModel.possibleUsers.observe(this, Observer { users ->
-            val usernames = users.map { user -> user.username }
+            val usernames = users.map { user -> user.username.toLowerCase() }
             val adapter = ArrayAdapter<String>(
                 this, android.R.layout.simple_dropdown_item_1line, usernames
             )
@@ -77,6 +79,9 @@ class MainActivity : AppCompatActivity() {
             reposViewModel.getUserRepos(username_textView.text.toString())
             swiperefresh.isRefreshing = false
         }
+
+        // makes the suggestion appeared when at least one character is pressed
+        username_editText.threshold = 1
 
         // attach the adapter to the recycler view
         adapter = RepoAdapter(this)

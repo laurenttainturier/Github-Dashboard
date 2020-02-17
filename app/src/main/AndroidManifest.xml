@@ -15,15 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RepoDetailActivity"
+            android:name=".Activities.RepoDetailActivity"
             android:label="Second Activity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".Activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.githubdashboard.MainActivity" />
+                android:value="com.example.githubdashboard.Activities.MainActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateVisible">
 
             <intent-filter>
